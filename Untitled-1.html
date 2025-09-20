@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gilded Graphics Portfolio</title>
+
+  <!-- Bootstrap 5.3.3 (exact version) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --teal:#017575;
+      --deep:#142828;
+      --orange:#fd7e50;
+      --gold:#d4af37;
+      --ink:#ffffff;
+    }
+
+    /* Global */
+    html,body{height:100%}
+    body{
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 1200px at 50% 40%, rgba(1,117,117,.55), transparent 60%),
+        radial-gradient(800px 800px at 50% 60%, rgba(20,40,40,.65), transparent 65%),
+        linear-gradient(180deg, var(--teal) 0%, var(--deep) 100%);
+      min-height:100%;
+      font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif;
+      line-height:1.6;
+      background-attachment: fixed;
+    }
+
+    a{color:var(--orange); text-decoration:none}
+    a:hover{color:var(--gold)}
+
+    /* Navbar */
+    .navbar{
+      --bs-navbar-color: rgba(255,255,255,.92);
+      --bs-navbar-hover-color: #fff;
+      --bs-navbar-brand-color: #fff;
+      --bs-navbar-toggler-border-color: rgba(255,255,255,.35);
+      background: rgba(0,0,0,.15);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .brand-mark{height:36px;width:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+
+    /* Hero */
+    .hero{position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.06)}
+    .hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 180% at 50% -10%, rgba(212,175,55,.22), transparent 55%),radial-gradient(40% 120% at 80% 20%, rgba(253,126,80,.12), transparent 60%)}
+    .banner-img{width:100%;height:clamp(220px,30vw,420px);object-fit:cover;display:block}
+    .hero-overlay{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:clamp(16px,4vw,40px);background:linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,0) 60%)}
+    .site-title{font-family:"Playfair Display",serif;font-weight:700;letter-spacing:.2px;text-shadow:0 2px 16px rgba(0,0,0,.35)}
+    .kicker{font-weight:300;letter-spacing:.16em;text-transform:uppercase;opacity:.95}
+
+    /* Section headings */
+    .section-title{font-family:"Playfair Display",serif;font-weight:700;letter-spacing:.3px;margin-bottom:.75rem}
+    .title-accent{background:linear-gradient(135deg,var(--orange),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+    /* Masonry grid (CSS columns) */
+    .portfolio-grid{column-count:3;column-gap:16px}
+    @media (max-width:992px){.portfolio-grid{column-count:2}}
+    @media (max-width:576px){.portfolio-grid{column-count:1}}
+
+    /* Tile */
+    .tile{display:inline-block;width:100%;margin:0 0 16px;position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.18);box-shadow:0 8px 24px rgba(0,0,0,.25);cursor:pointer}
+    .frame{width:100%;overflow:hidden;line-height:0}
+    .ratio-16x9{aspect-ratio:16/9}.ratio-1x1{aspect-ratio:1/1}.ratio-3x4{aspect-ratio:3/4}.ratio-9x16{aspect-ratio:9/16}.ratio-5x4{aspect-ratio:5/4}
+    .ratio-5x6{aspect-ratio:5/6}
+    .tile img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+    .tile:hover img{transform:scale(1.04)}
+
+    /* Tag + Title overlay */
+    .badge-tag{position:absolute;top:10px;left:10px;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:.25rem .5rem;border-radius:999px;color:#111;background:linear-gradient(135deg,var(--gold),var(--orange));border:1px solid rgba(255,255,255,.6);z-index:2}
+    .tile-caption{position:absolute;left:0;right:0;bottom:0;padding:10px 12px 12px;background:linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,0));z-index:1}
+    .tile-title{margin:0;font-weight:600;line-height:1.2;font-size:clamp(.95rem,1vw + .6rem,1.1rem);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+
+    /* Cards */
+    .soft-card{border-radius:20px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.22);box-shadow:0 12px 28px rgba(0,0,0,.25)}
+    .btn-accent{--bs-btn-color:#111;--bs-btn-bg:linear-gradient(135deg,var(--orange),var(--gold));--bs-btn-border-color:rgba(255,255,255,.5);--bs-btn-hover-bg:linear-gradient(135deg,var(--gold),var(--orange));--bs-btn-hover-border-color:#fff;--bs-btn-active-bg:linear-gradient(135deg,var(--gold),var(--orange));--bs-btn-active-border-color:#fff;border:1px solid var(--bs-btn-border-color)}
+    footer{border-top:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.18)}
+    .tile:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+    /* Modal content spacing */
+    .meta-block h6{margin:0 0 .25rem 0; text-transform:uppercase; letter-spacing:.08em; opacity:.8}
+    .meta-block p{margin:0 0 1rem 0}
+    .meta-block:last-child p{margin-bottom:0}
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <img src="Assets/SVG's/logo white.svg" alt="Gilded Graphics logo" class="brand-mark">
+        <span class="fw-semibold">Gilded Graphics</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="filter: invert(1) brightness(1.8);"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMain">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="#work">Work</a></li>
+          <li class="nav-item"><a class="nav-link" href="#specialties">Specialties</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero pt-5">
+    <img src="Assets/SVG's/banner 1.svg" class="banner-img" alt="Gilded Graphics banner">
+    <div class="hero-overlay text-center">
+      <div>
+        <h1 class="site-title display-5 mb-2">Gilded <span class="title-accent">Graphics</span></h1>
+        <div class="kicker">Graphic Designer • Branding • Packaging • Motion</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="pb-5">
+    <!-- Work -->
+    <section id="work" class="container py-5">
+      <div class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-3">
+        <h2 class="section-title m-0">My <span class="title-accent">Work</span></h2>
+        <div class="d-flex gap-2"><span class="badge rounded-pill text-dark" style="background:linear-gradient(135deg,var(--orange),var(--gold));">New</span></div>
+      </div>
+      <p class="mb-4">Click any project to see a short description and process images. Each tile is a different project; the modal shows the brief, what I learned, and per-image descriptions.</p>
+
+      <div class="portfolio-grid">
+        <!-- JAVA JUNCTION CAFÉ — 5 process slides -->
+        <figure class="tile" role="button" tabindex="0"
+                data-bs-toggle="modal" data-bs-target="#projectModal"
+                data-title="Java Junction Café"
+                data-badge="Product Design"
+                data-brief="For the Java Junction Café project, my client was a local coffee shop dedicated to supporting animal shelters. The objective was to create a cohesive rebrand that raised awareness about adoption and community involvement through a logo, packaging, social media content, and event materials. My design approach balanced professional branding with an inviting, compassionate tone, resulting in visuals that both promoted the café and effectively highlighted its mission to help animals in need."
+                data-learned="I combined 2D and 3D techniques: extruding letters in Illustrator, creating a coin in Blender, and applying materials for a polished result. I also used Adobe Dimensions for 3D assets/backgrounds and refined shading in Photoshop for realism."
+                data-tools-used="Adobe Illustrator, Adobe Photoshop, Adobe Dimensions, Blender"
+                data-date-completed="2024 November 21"
+                data-process-1="Assets/Images/dog.png"                 data-caption-1="Initial mascot sketch and shape exploration."
+                data-process-2="Assets/Images/dog designing.png"       data-caption-2="Vector refinement and proportion tweaks."
+                data-process-3="Assets/Images/dog 2.png"               data-caption-3="Alternate poses and brand fit testing."
+                data-process-4="Assets/Images/map illu.png"            data-caption-4="Supporting illustration style direction."
+                data-process-5="Assets/Images/first coffee.png"        data-caption-5="System mock—logo + palette + type in context.">
+          <span class="badge-tag">Product Design</span>
+          <div class="frame ratio-5x4">
+            <img loading="lazy" src="Assets/Images/product.png" alt="Java Junction Café final">
+          </div>
+          <figcaption class="tile-caption"><h3 class="tile-title">Java Junction Café</h3></figcaption>
+        </figure>
+
+        <!-- FoodForward SA Pendants — 4 process slides -->
+        <figure class="tile" role="button" tabindex="0"
+                data-bs-toggle="modal" data-bs-target="#projectModal"
+                data-title="FoodForward SA Pendants"
+                data-badge="Packaging"
+                data-brief="Packaging concept and final product shots for FoodForward SA pendants, designed for clarity, impact, and production readiness."
+                data-learned="Worked through dielines, finishes, and production constraints while building clean visuals."
+                data-tools-used="Adobe Illustrator, Adobe Photoshop"
+                data-date-completed="2025"
+                data-process-1="REPLACE_ME_Assets/Images/ffsa-pendants/01-sketches.png"       data-caption-1="Early sketches and structure ideas."
+                data-process-2="REPLACE_ME_Assets/Images/ffsa-pendants/02-vector-build.png"    data-caption-2="Vector packaging net and lock tabs."
+                data-process-3="REPLACE_ME_Assets/Images/ffsa-pendants/03-color-options.png"   data-caption-3="Colorways and material notes."
+                data-process-4="REPLACE_ME_Assets/Images/ffsa-pendants/04-mockups.png"        data-caption-4="Shelf mockups and hero views.">
+          <span class="badge-tag">Packaging</span>
+          <div class="frame ratio-16x9">
+            <img loading="lazy" src="Assets/Images/pendants product design for foodforward SA.png" alt="FoodForward SA pendants final">
+          </div>
+          <figcaption class="tile-caption"><h3 class="tile-title">FoodForward SA Pendants</h3></figcaption>
+        </figure>
+
+        <!-- First Coffee Identity — 4 process slides -->
+        <figure class="tile" role="button" tabindex="0"
+                data-bs-toggle="modal" data-bs-target="#projectModal"
+                data-title="First Coffee Identity"
+                data-badge="Identity"
+                data-brief="Identity system exploration and final for First Coffee, focusing on typography, palette, and flexible assets."
+                data-learned="Built a coherent identity across logo, color, and type scales."
+                data-tools-used="Adobe Illustrator, Adobe Photoshop"
+                data-date-completed="2025"
+                data-process-1="REPLACE_ME_Assets/Images/first-coffee/01-logo-studies.png"    data-caption-1="Logo studies and marks."
+                data-process-2="REPLACE_ME_Assets/Images/first-coffee/02-type-scale.png"      data-caption-2="Type scales and rhythm."
+                data-process-3="REPLACE_ME_Assets/Images/first-coffee/03-color-system.png"    data-caption-3="Palette tests and contrast."
+                data-process-4="REPLACE_ME_Assets/Images/first-coffee/04-applications.png"    data-caption-4="Applications and mockups.">
+          <span class="badge-tag">Identity</span>
+          <div class="frame ratio-16x9">
+            <img loading="lazy" src="Assets/Images/first coffee.png" alt="First Coffee final">
+          </div>
+          <figcaption class="tile-caption"><h3 class="tile-title">First Coffee Identity</h3></figcaption>
+        </figure>
+
+        <!-- NGO: Carrot Product — 4 process slides -->
+        <figure class="tile" role="button" tabindex="0"
+                data-bs-toggle="modal" data-bs-target="#projectModal"
+                data-title="NGO: Carrot Product"
+                data-badge="NGO Product"
+                data-brief="Product concept for an NGO initiative; focus on audience impact and functional design."
+                data-learned="Iterated form and messaging for clarity and social purpose."
+                data-tools-used="Adobe Illustrator, Adobe Photoshop"
+                data-date-completed="2025"
+                data-process-1="Assets/Images/carrot first.png"                               data-caption-1="Initial product sketches."
+                data-process-2="Assets/Images/carrot second.png"                              data-caption-2="Refined structure and scale."
+                data-process-3="Assets/Images/pendants product design for foodforward SA.png" data-caption-3="Material + color tests."
+                data-process-4="Assets/Images/carrot fourth.png"                              data-caption-4="Presentation mockups.">
+          <span class="badge-tag">NGO Product</span>
+          <div class="frame ratio-16x9">
+            <img loading="lazy" src="Assets/Images/best one 2.png" alt="NGO carrot product final">
+          </div>
+          <figcaption class="tile-caption"><h3 class="tile-title">NGO: Carrot Product</h3></figcaption>
+        </figure>
+
+        <!-- NGO/FoodForward SA POS — 4 process slides -->
+        <figure class="tile" role="button" tabindex="0"
+                data-bs-toggle="modal" data-bs-target="#projectModal"
+                data-title="NGO/FoodForward SA POS"
+                data-badge="NGO Product"
+                data-brief="Point-of-sale display concept and mockup for FoodForward SA; aligned layout, messaging, and visuals with the NGO’s identity."
+                data-learned="Developed POS structure, refined messaging, and assembled a complete presentation."
+                data-tools-used="Adobe Illustrator, Adobe Photoshop"
+                data-date-completed="2025 March 27"
+                data-process-1="Assets/Images/carrot first.png"                               data-caption-1="POS structure sketch."
+                data-process-2="Assets/Images/carrot second.png"                              data-caption-2="Die-line and folds."
+                data-process-3="Assets/Images/pendants product design for foodforward SA.png" data-caption-3="Graphics placement."
+                data-process-4="Assets/Images/carrot fourth.png"                              data-caption-4="Final mock and assembly.">
+          <span class="badge-tag">NGO Product</span>
+          <div class="frame ratio-9x16">
+            <img loading="lazy" src="Assets/Images/dimentions trincets buiold 6.png" alt="NGO POS final">
+          </div>
+          <figcaption class="tile-caption"><h3 class="tile-title">NGO: POS Display for FoodForward SA</h3></figcaption>
+        </figure>
+
+        <!-- NGO Social – Post 1 — 4 process slides -->
+        <figure class="tile" role="button" tabindex="0"
+                data-bs-toggle="modal" data-bs-target="#projectModal"
+                data-title="NGO Social – Post 1"
+                data-badge="Social"
+                data-brief="Social media asset designed for format constraints, clarity, and shareability."
+                data-learned="Balanced type, image, and hierarchy for social formats."
+                data-tools-used="Adobe Illustrator, Adobe Photoshop"
+                data-date-completed="2025"
+                data-process-1="REPLACE_ME_Assets/Images/ngo-social/01-wireframes.png"        data-caption-1="Wireframes for post sizes."
+                data-process-2="REPLACE_ME_Assets/Images/ngo-social/02-layout-options.png"    data-caption-2="Layout variants tested."
+                data-process-3="REPLACE_ME_Assets/Images/ngo-social/03-artwork.png"           data-caption-3="Artwork production."
+                data-process-4="REPLACE_ME_Assets/Images/ngo-social/04-export.png"            data-caption-4="Export prep and QA.">
+          <span class="badge-tag">Social</span>
+          <div class="frame ratio-16x9">
+            <img loading="lazy" src="Assets/Images/first digital ngo.png" alt="NGO social final">
+          </div>
+          <figcaption class="tile-caption"><h3 class="tile-title">NGO Social – Post 1</h3></figcaption>
+        </figure>
+
+        <!-- Editorial Layout — 4 process slides -->
+        <figure class="tile" role="button" tabindex="0"
+                data-bs-toggle="modal" data-bs-target="#projectModal"
+                data-title="Editorial Layout"
+                data-badge="Editorial"
+                data-brief="Editorial double-spread exploring grid, hierarchy, and image treatment."
+                data-learned="Built modular grids and typographic rhythm for editorial."
+                data-tools-used="Adobe Illustrator, Adobe InDesign"
+                data-date-completed="2025"
+                data-process-1="REPLACE_ME_Assets/Images/editorial/01-grid.png"               data-caption-1="Grid options and gutters."
+                data-process-2="REPLACE_ME_Assets/Images/editorial/02-typography.png"         data-caption-2="Type pairing and scale."
+                data-process-3="REPLACE_ME_Assets/Images/editorial/03-image-treatment.png"    data-caption-3="Image treatment explorations."
+                data-process-4="REPLACE_ME_Assets/Images/editorial/04-print-mock.png"         data-caption-4="Print mock and proof.">
+          <span class="badge-tag">Editorial</span>
+          <div class="frame ratio-16x9">
+            <img loading="lazy" src="Assets/Images/commdesign final summitive.png" alt="Editorial final">
+          </div>
+          <figcaption class="tile-caption"><h3 class="tile-title">Editorial Layout</h3></figcaption>
+        </figure>
+
+        <!-- FoodForward SA — Event Media Posts — 4 process slides -->
+        <figure class="tile" role="button" tabindex="0"
+                data-bs-toggle="modal" data-bs-target="#projectModal"
+                data-title="FoodForward SA — Upcoming Event"
+                data-badge="Marketing"
+                data-brief="Promotional social posts for an upcoming FoodForward SA event, highlighting new flavors and roast profiles."
+                data-learned="Systematized layouts for a cohesive campaign set and export."
+                data-tools-used="Adobe Illustrator, Adobe Photoshop"
+                data-date-completed="2025"
+                data-process-1="Assets/Images/ngo 1 posts.png"                                data-caption-1="First composition draft."
+                data-process-2="REPLACE_ME_Assets/Images/ffsa-media/02-typography-comps.png"  data-caption-2="Typography comps and spacing."
+                data-process-3="REPLACE_ME_Assets/Images/ffsa-media/03-color-flavor-variants.png" data-caption-3="Flavor/roast color system."
+                data-process-4="REPLACE_ME_Assets/Images/ffsa-media/04-grid-export-prep.png"  data-caption-4="Grid locking and export.">
+          <span class="badge-tag">Marketing</span>
+          <div class="frame ratio-5x6">
+            <img loading="lazy" src="Assets/Images/2x/mARKETING POSTS@2x.png" alt="FoodForward SA media posts – main">
+          </div>
+          <figcaption class="tile-caption"><h3 class="tile-title">FoodForward SA Media Posts (Upcoming Event)</h3></figcaption>
+        </figure>
+
+        <!-- Mobile Mockup 2 — 4 process slides -->
+        <figure class="tile" role="button" tabindex="0"
+                data-bs-toggle="modal" data-bs-target="#projectModal"
+                data-title="Mobile Mockup 2"
+                data-badge="Application Design"
+                data-brief="Variant mobile layout exploring alternate components and interactions."
+                data-learned="Refined spacing, type scales, and component variants for mobile."
+                data-tools-used="Adobe Illustrator, Adobe Photoshop"
+                data-date-completed="2025"
+                data-process-1="REPLACE_ME_Assets/Images/mobile-2/01-wireframe.png"           data-caption-1="Wireframe flow."
+                data-process-2="REPLACE_ME_Assets/Images/mobile-2/02-components.png"          data-caption-2="Component set."
+                data-process-3="REPLACE_ME_Assets/Images/mobile-2/03-visual-design.png"       data-caption-3="Visual pass + polish."
+                data-process-4="REPLACE_ME_Assets/Images/mobile-2/04-export.png"              data-caption-4="Export checklist.">
+          <span class="badge-tag">Application Design</span>
+          <div class="frame ratio-16x9">
+            <img loading="lazy" src="Assets/Images/phone mockup 2 ngo.png" alt="Mobile mockup 2 final">
+          </div>
+          <figcaption class="tile-caption"><h3 class="tile-title">Mobile Mockup 2</h3></figcaption>
+        </figure>
+
+        <!-- Toothpaste Redesign — 4 process slides -->
+        <figure class="tile" role="button" tabindex="0"
+                data-bs-toggle="modal" data-bs-target="#projectModal"
+                data-title="Toothpaste Redesign"
+                data-badge="Packaging"
+                data-brief="Colgate Triple Action toothpaste redesign focused on clarity and shelf impact."
+                data-learned="Explored packaging hierarchy and brand consistency across variants."
+                data-tools-used="Adobe Illustrator, Adobe Photoshop"
+                data-date-completed="2025"
+                data-process-1="REPLACE_ME_Assets/Images/toothpaste/01-research.png"           data-caption-1="Research & competitive scan."
+                data-process-2="REPLACE_ME_Assets/Images/toothpaste/02-sketches.png"           data-caption-2="Sketches + structure."
+                data-process-3="REPLACE_ME_Assets/Images/toothpaste/03-vector.png"             data-caption-3="Vector build + hierarchy."
+                data-process-4="REPLACE_ME_Assets/Images/toothpaste/04-mockups.png"            data-caption-4="Shelf mockups.">
+          <span class="badge-tag">Packaging</span>
+          <div class="frame ratio-16x9">
+            <img loading="lazy" src="Assets/Images/final final comm design toothpaste.png" alt="Toothpaste redesign final">
+          </div>
+          <figcaption class="tile-caption"><h3 class="tile-title">Product Redesign — Toothpaste</h3></figcaption>
+        </figure>
+
+      </div>
+    </section>
+
+    <!-- Specialties -->
+    <section id="specialties" class="container pb-5">
+      <h2 class="section-title">My <span class="title-accent">Specialties</span></h2>
+      <p class="mb-4">I focus on clear visual systems and production-ready assets across brand, packaging, and motion. Here’s where I’m strongest:</p>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+          <div class="soft-card p-4 h-100">
+            <h5 class="mb-2">Adobe Illustrator</h5>
+            <p class="mb-0 small">Illustration, vector systems, iconography, and logo craft — strong brand discipline and scalability.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="soft-card p-4 h-100">
+            <h5 class="mb-2">Adobe Photoshop</h5>
+            <p class="mb-0 small">Photo manipulation, advanced cutouts, compositing, non-destructive workflow, and polish.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="soft-card p-4 h-100">
+            <h5 class="mb-2">Adobe InDesign</h5>
+            <p class="mb-0 small">Presentation design and editorial layout with strong grid, type hierarchy, and print prep.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="soft-card p-4 h-100">
+            <h5 class="mb-2">3D & Motion</h5>
+            <p class="mb-0 small">Blender & Adobe Dimension materials/lighting; motion & video editing fundamentals.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="container pb-5">
+      <div class="row g-4 align-items-stretch">
+        <div class="col-lg-7">
+          <div class="soft-card p-4 p-lg-5 h-100">
+            <h2 class="section-title">About <span class="title-accent">Me</span></h2>
+            <p class="mb-3">I’m a South Africa–based graphic designer focused on clear, memorable brand systems. I blend strategy with craft across logos, visual identities, packaging, and motion graphics.</p>
+            <ul class="mb-4">
+              <li>Services: Branding &amp; Identity, Packaging, Editorial, Social, Motion</li>
+              <li>Toolbox: Adobe CC (AI, PS, ID, AE, PR), Figma, Blender</li>
+              <li>Approach: research-driven concepts, typographic rigor, color systems</li>
+            </ul>
+            <a class="btn btn-accent" href="#contact">Get in touch</a>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="soft-card p-4 h-100">
+            <h3 class="section-title fs-3">At a Glance</h3>
+            <div class="d-grid gap-3">
+              <div><span class="fw-semibold">Awards/Highlights:</span> add yours here</div>
+              <div><span class="fw-semibold">Clients:</span> add clients here</div>
+              <div><span class="fw-semibold">Exhibitions/Features:</span> add press here</div>
+              <div><span class="fw-semibold">Download CV:</span> <a href="#" class="link-light">Add PDF</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact anchor (content placeholder) -->
+    <section id="contact" class="container pb-5">
+      <div class="soft-card p-4">
+        <h2 class="section-title">Contact</h2>
+        <p class="mb-0">Add your contact form or details here.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-4">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <div class="small">© <span id="y"></span> Gilded Graphics • Made with Bootstrap 5</div>
+      <div class="small">Palette: <span style="color:var(--orange)">#fd7e50</span> / <span style="color:var(--gold)">#d4af37</span> / <span style="color:var(--teal)">#017575</span> / <span style="color:var(--deep)">#142828</span></div>
+    </div>
+  </footer>
+
+  <!-- ========= SINGLE REUSABLE PROJECT MODAL ========= -->
+  <div class="modal fade" id="projectModal" tabindex="-1" aria-hidden="true" data-bs-theme="dark">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content bg-dark border-light">
+        <div class="modal-header">
+          <h5 class="modal-title" id="projectModalLabel">Project Title</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-4">
+            <div class="col-lg-5">
+              <div class="meta-block">
+                <h6>Brief</h6>
+                <p id="projectDesc">Description placeholder.</p>
+              </div>
+              <div class="meta-block">
+                <h6>What I learned</h6>
+                <p id="projectLearned">—</p>
+              </div>
+              <div class="meta-block">
+                <h6>Tools used</h6>
+                <p id="projectTools">—</p>
+              </div>
+              <div class="meta-block">
+                <h6>Date completed</h6>
+                <p id="projectYear">—</p>
+              </div>
+            </div>
+            <div class="col-lg-7">
+              <div id="projectCarousel" class="carousel slide" data-bs-ride="false">
+                <div class="carousel-inner" id="projectCarouselInner"></div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#projectCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#projectCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+              <!-- Per-slide image description (auto-updates) -->
+              <div id="imageCaption" class="form-text mt-2"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== Scripts ======== -->
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Auto-assign aspect ratios -->
+  <script>
+    document.querySelectorAll('.tile .frame').forEach(function(frame){
+      var classes = ["ratio-16x9","ratio-1x1","ratio-3x4","ratio-9x16","ratio-5x4","ratio-5x6"];
+      if (classes.some(function(c){return frame.classList.contains(c);})){return;}
+      var img = frame.querySelector('img'); if(!img) return;
+      var apply=function(){
+        var r=img.naturalWidth/img.naturalHeight;
+        if(r>=1.7) frame.classList.add('ratio-16x9');
+        else if(r>=1.15) frame.classList.add('ratio-5x4');
+        else if(r>=0.95) frame.classList.add('ratio-1x1');
+        else if(r>=0.83) frame.classList.add('ratio-5x6');
+        else if(r>=0.7) frame.classList.add('ratio-3x4');
+        else frame.classList.add('ratio-9x16');
+      };
+      if(img.complete){apply();} else {img.onload=apply;}
+    });
+  </script>
+
+  <!-- Reusable modal population (supports captions and your renamed data-attributes) -->
+  <script>
+    var placeholderURI = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">\\n' +
+      '  <defs>\\n' +
+      '    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">\\n' +
+      '      <stop offset="0%" stop-color="#142828"/>\\n' +
+      '      <stop offset="100%" stop-color="#017575"/>\\n' +
+      '    </linearGradient>\\n' +
+      '  </defs>\\n' +
+      '  <rect width="100%" height="100%" fill="url(#g)"/>\\n' +
+      '  <text x="50%" y="45%" text-anchor="middle" fill="#ffffff" font-size="56" font-family="Poppins, Arial" opacity="0.9">Process Placeholder</text>\\n' +
+      '  <text x="50%" y="55%" text-anchor="middle" fill="#ffffff" font-size="28" font-family="Poppins, Arial" opacity="0.7">Replace with your process image</text>\\n' +
+      '</svg>'
+    );
+
+    var projectModal = document.getElementById('projectModal');
+    var captionEl = document.getElementById('imageCaption');
+
+    projectModal.addEventListener('show.bs.modal', function (event) {
+      var tile = event.relatedTarget; // clicked .tile
+      if (!tile) return;
+
+      // Read attributes (with fallbacks to older names)
+      var title = tile.getAttribute('data-title') ||
+                  (tile.querySelector('.tile-title') ? tile.querySelector('.tile-title').textContent : 'Project');
+
+      var brief = tile.getAttribute('data-brief') ||
+                  tile.getAttribute('data-desc') || 'Description coming soon.';
+
+      var learned = tile.getAttribute('data-learned') ||
+                    tile.getAttribute('data-role') || '';
+
+      var tools = tile.getAttribute('data-tools-used') ||
+                  tile.getAttribute('data-tools') || '';
+
+      var dateCompleted = tile.getAttribute('data-date-completed') ||
+                          tile.getAttribute('data-year') || new Date().getFullYear();
+
+      projectModal.querySelector('#projectModalLabel').textContent = title;
+      projectModal.querySelector('#projectDesc').textContent = brief;
+      (projectModal.querySelector('#projectLearned') || projectModal.querySelector('#projectRole')).textContent = learned;
+      projectModal.querySelector('#projectTools').textContent = tools;
+      projectModal.querySelector('#projectYear').textContent = dateCompleted;
+
+      // Build slides
+      var finalImgEl = tile.querySelector('img');
+      var finalImg = finalImgEl ? finalImgEl.getAttribute('src') : placeholderURI;
+      var finalAlt = finalImgEl ? finalImgEl.getAttribute('alt') : (title + ' final');
+
+      var inner = projectModal.querySelector('#projectCarouselInner');
+      inner.innerHTML = '';
+
+      // Slide 1: final (active)
+      var first = document.createElement('div');
+      first.className = 'carousel-item active';
+      first.dataset.caption = 'Final design';
+      var firstImg = document.createElement('img');
+      firstImg.className = 'd-block w-100';
+      firstImg.loading = 'lazy';
+      firstImg.src = finalImg;
+      firstImg.alt = finalAlt;
+      first.appendChild(firstImg);
+      inner.appendChild(first);
+
+      // Slides 2..N: data-process-* + optional data-caption-*
+      var attrs = Array.prototype.filter.call(tile.attributes, function(a){
+        return a.name.indexOf('data-process-') === 0;
+      }).sort(function(a,b){
+        return parseInt(a.name.split('-').pop(),10) - parseInt(b.name.split('-').pop(),10);
+      });
+
+      attrs.forEach(function(a){
+        var idx = parseInt(a.name.split('-').pop(),10);
+        var s = document.createElement('div');
+        s.className = 'carousel-item';
+        // read caption if present
+        var capAttr = 'data-caption-' + idx;
+        s.dataset.caption = tile.getAttribute(capAttr) || '';
+        var img = document.createElement('img');
+        img.className = 'd-block w-100';
+        img.loading = 'lazy';
+        img.src = a.value;
+        img.alt = 'Process ' + idx;
+        s.appendChild(img);
+        inner.appendChild(s);
+      });
+
+      // Set initial caption (for active slide)
+      var activeItem = inner.querySelector('.carousel-item.active');
+      if (captionEl) {
+        var text = activeItem && activeItem.dataset.caption ? activeItem.dataset.caption : '';
+        captionEl.textContent = text;
+        captionEl.style.display = text ? 'block' : 'none';
+      }
+    });
+
+    // Update caption when the slide changes
+    var carouselEl = document.getElementById('projectCarousel');
+    carouselEl.addEventListener('slid.bs.carousel', function () {
+      var inner = document.getElementById('projectCarouselInner');
+      var activeItem = inner.querySelector('.carousel-item.active');
+      var text = activeItem && activeItem.dataset.caption ? activeItem.dataset.caption : '';
+      captionEl.textContent = text;
+      captionEl.style.display = text ? 'block' : 'none';
+    });
+  </script>
+</body>
+</html>
